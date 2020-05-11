@@ -18,8 +18,6 @@ namespace Lab2b
         public Form1()
         {
             InitializeComponent();       
-           /* SaveDialogBtn.Click += SaveDialogBtn_Click;
-            OpenDialogBtn.Click += OpenDialogBtn_Click;*/
             openFileDialog1.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
             saveFileDialog1.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
 
