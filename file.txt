@@ -1,0 +1,3 @@
+Tast 1 (Quantity S < S cp)
+№ 2   R = 2    S = 12,56   C = 12,56
+Quantity = 1

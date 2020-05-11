@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,13 @@ namespace Lab2b
         Circles circles;
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();       
+           /* SaveDialogBtn.Click += SaveDialogBtn_Click;
+            OpenDialogBtn.Click += OpenDialogBtn_Click;*/
+            openFileDialog1.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
+            saveFileDialog1.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
+
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -57,12 +64,14 @@ namespace Lab2b
             Circle circle = new Circle(Double.Parse(RtextBox.Text));
             circles.addCircle(circle);
             MessageBox.Show(circle.ToString());
+
+            
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
 
-            MessageBox.Show(circles.ToString());
+           // MessageBox.Show(circles.ToString());
             richTextBox1.Text = Convert.ToString("Tast 1 (Quantity S < S cp)" + Environment.NewLine);
             double Scp = 0;
             int k = 0;
@@ -81,7 +90,8 @@ namespace Lab2b
                     richTextBox1.Text = richTextBox1.Text + Convert.ToString("№ " + (i+1) + "   " + circles.GetCircleAt(i)).ToString() + Environment.NewLine;
                 }
             }
-            richTextBox1.Text = richTextBox1.Text + Convert.ToString("Quantity = " + k); 
+            richTextBox1.Text = richTextBox1.Text + Convert.ToString("Quantity = " + k + Environment.NewLine);
+            //
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -91,12 +101,20 @@ namespace Lab2b
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            Cone cone = new Cone(Double.Parse(R2textBox.Text), Double.Parse(HtextBox.Text));
-            circles.addCircle(cone);
-            MessageBox.Show(cone.ToString());
+            try
+            {
+                Cone cone = new Cone(Double.Parse(R2textBox.Text), Double.Parse(HtextBox.Text));
+                circles.addCircle(cone);
+                MessageBox.Show(cone.ToString());
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+           
+            
 
         }
-
         private void button2_Click_1(object sender, EventArgs e)
         {
             try
@@ -119,12 +137,47 @@ namespace Lab2b
             for (int i = 0; i < circles.getCirclesNumber(); i++)
             {
                 V = 0.3 * circles.GetCircleAt(i).Radius * circles.GetCircleAt(i).Radius /* circles.GetCircleAt(i).Height*/;
-                if (V > Vmax)
+                 if (V > Vmax)
                 {
                     Vmax = V; 
                 }
             }  
             richTextBox2.Text +=  Convert.ToString("Vmax = " + Vmax + Environment.NewLine);
+            
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+           
+
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            string nametext = openFileDialog1.FileName;
+            string fileText = System.IO.File.ReadAllText(nametext);
+            richTextBox1.Text = fileText;
+            MessageBox.Show("Файл открыт");
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            string nametext = saveFileDialog1.FileName;
+            System.IO.File.WriteAllText(nametext, richTextBox1.Text);
+            MessageBox.Show("Файл сохранен");
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
